@@ -786,14 +786,20 @@
 
   .audio-timeline { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
   .progress-bar-wrap {
-    height: 3px; background: var(--border);
+    height: 18px; background: transparent;
     border-radius: 2px; cursor: pointer; position: relative;
+    display: flex; align-items: center;
+  }
+  .progress-bar-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    margin: auto 0; height: 3px;
+    background: var(--border); border-radius: 2px;
   }
   .progress-bar-fill {
-    height: 100%; background: var(--blue);
+    height: 3px; background: var(--blue);
     border-radius: 2px; width: 0%;
-    transition: width 0.5s linear;
     pointer-events: none;
+    position: relative; z-index: 1;
     box-shadow: 0 0 6px var(--blue);
   }
   .audio-time {
@@ -1264,7 +1270,7 @@
             <div class="demo-book-author">Dr. Casey Means with Calley Means</div>
           </div>
           <div class="demo-meta">
-            <div class="meta-item"><span class="meta-val">3:42</span><span class="meta-key">Listen Time</span></div>
+            <div class="meta-item"><span class="meta-val">2:19</span><span class="meta-key">Listen Time</span></div>
             <div class="meta-item"><span class="meta-val">5</span><span class="meta-key">Key Ideas</span></div>
             <div class="meta-item"><span class="meta-val">304</span><span class="meta-key">Pages Saved</span></div>
           </div>
@@ -1280,13 +1286,13 @@
                   <div class="progress-bar-fill" id="progressFill"></div>
                 </div>
                 <div class="audio-time">
-                  <span id="timeElapsed">0:00</span><span>3:42</span>
+                  <span id="timeElapsed">0:00</span><span id="audioDuration">2:19</span>
                 </div>
               </div>
             </div>
           </div>
           <p style="font-size:0.7rem;color:var(--ash);line-height:1.6;">
-            🔊 Demo simulates the BRVTY audio experience. The app uses real AI voice synthesis.
+            🔊 Real AI-generated audio. Press play to hear the actual BRVTY summary experience.
           </p>
           <a href="https://www.amazon.com/Good-Energy-Surprising-Connection-Metabolism/dp/0593712641" target="_blank" rel="noopener"
              style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);text-decoration:none;border:1px solid rgba(43,127,255,0.25);padding:0.5rem 0.9rem;border-radius:var(--radius);display:inline-flex;align-items:center;gap:0.4rem;transition:border-color 0.2s,color 0.2s;">
@@ -1456,35 +1462,66 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 revealEls.forEach(el => io.observe(el));
 
-let playing = false, elapsed = 0;
-const totalSec = 222;
-let interval = null;
+// ── REAL AUDIO PLAYER ──
+const audio = new Audio('good-energy-summary.mp3');
+audio.preload = 'metadata';
 
-function togglePlay() {
-  playing = !playing;
-  const btn = document.getElementById('playBtn');
-  btn.classList.toggle('paused', !playing);
-  if (playing) {
-    interval = setInterval(() => {
-      elapsed = Math.min(elapsed + 1, totalSec);
-      updateProgress();
-      if (elapsed >= totalSec) { clearInterval(interval); playing = false; btn.classList.add('paused'); }
-    }, 1000);
-  } else { clearInterval(interval); }
+const playBtn   = document.getElementById('playBtn');
+const fillEl    = document.getElementById('progressFill');
+const wrapEl    = document.getElementById('progressWrap');
+const timeEl    = document.getElementById('timeElapsed');
+const durEl     = document.getElementById('audioDuration');
+
+function fmt(s) {
+  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+  return m + ':' + String(sec).padStart(2, '0');
 }
 
-function updateProgress() {
-  document.getElementById('progressFill').style.width = (elapsed / totalSec * 100) + '%';
-  const m = Math.floor(elapsed / 60), s = elapsed % 60;
-  document.getElementById('timeElapsed').textContent = m + ':' + String(s).padStart(2,'0');
+// Once metadata loads, show real duration
+audio.addEventListener('loadedmetadata', () => {
+  if (durEl) durEl.textContent = fmt(audio.duration);
+});
+
+// Tick the progress bar during playback
+audio.addEventListener('timeupdate', () => {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  fillEl.style.transition = 'none';
+  fillEl.style.width = pct + '%';
+  timeEl.textContent = fmt(audio.currentTime);
+});
+
+// Reset UI when track ends
+audio.addEventListener('ended', () => {
+  playBtn.classList.add('paused');
+  fillEl.style.width = '0%';
+  timeEl.textContent = '0:00';
+});
+
+function togglePlay() {
+  if (audio.paused) {
+    audio.play().catch(() => {}); // catch autoplay policy errors silently
+    playBtn.classList.remove('paused');
+  } else {
+    audio.pause();
+    playBtn.classList.add('paused');
+  }
 }
 
 function seekAudio(e) {
-  const wrap = document.getElementById('progressWrap');
-  const rect = wrap.getBoundingClientRect();
-  elapsed = Math.round(Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)) * totalSec);
-  updateProgress();
+  if (!audio.duration) return;
+  const rect = wrapEl.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+  audio.currentTime = pct * audio.duration;
+  fillEl.style.transition = 'none';
+  fillEl.style.width = (pct * 100) + '%';
+  timeEl.textContent = fmt(audio.currentTime);
 }
+
+// Touch support for scrubbing
+wrapEl.addEventListener('touchstart', seekAudio, { passive: true });
+wrapEl.addEventListener('touchmove',  seekAudio, { passive: true });
 
 window.addEventListener('scroll', () => {
   document.querySelector('header').style.borderBottomColor =
