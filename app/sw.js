@@ -1,17 +1,17 @@
 const CACHE_NAME = 'brvty-v6';
-const OFFLINE_URL = '/brvty/offline.html';
+const OFFLINE_URL = '/app/offline.html';
 
 const PRECACHE_ASSETS = [
-  '/brvty/',
-  '/brvty/index.html',
-  '/brvty/manifest.json',
-  '/brvty/offline.html',
-  '/brvty/icon-192.png',
-  '/brvty/icon-512.png',
-  '/brvty/icon-180.png',
-  '/brvty/icon-152.png',
-  '/brvty/icon-120.png',
-  '/brvty/icon-76.png',
+  '/app/',
+  '/app/index.html',
+  '/app/manifest.json',
+  '/app/offline.html',
+  '/app/icon-192.png',
+  '/app/icon-512.png',
+  '/app/icon-180.png',
+  '/app/icon-152.png',
+  '/app/icon-120.png',
+  '/app/icon-76.png',
 ];
 
 // ── INSTALL ──────────────────────────────────────────────────────────────────
@@ -55,7 +55,7 @@ self.addEventListener('fetch', e => {
   // Navigation requests — serve app shell, fallback to offline page
   if (e.request.mode === 'navigate') {
     e.respondWith(
-      caches.match('/brvty/index.html')
+      caches.match('/app/index.html')
         .then(r => r || fetch(e.request))
         .catch(() => caches.match(OFFLINE_URL))
     );
@@ -81,9 +81,9 @@ self.addEventListener('fetch', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
-  if (url.pathname === '/brvty/' && url.searchParams.has('title')) {
+  if (url.pathname === '/app/' && url.searchParams.has('title')) {
     // Share target received — let the app handle it via URL params
-    e.respondWith(caches.match('/brvty/index.html'));
+    e.respondWith(caches.match('/app/index.html'));
   }
 });
 
@@ -93,10 +93,10 @@ self.addEventListener('notificationclick', e => {
   e.waitUntil(
     clients.matchAll({type:'window'}).then(clientList => {
       for (const client of clientList) {
-        if (client.url.includes('/brvty/') && 'focus' in client)
+        if (client.url.includes('/app/') && 'focus' in client)
           return client.focus();
       }
-      if (clients.openWindow) return clients.openWindow('/brvty/');
+      if (clients.openWindow) return clients.openWindow('/app/');
     })
   );
 });
