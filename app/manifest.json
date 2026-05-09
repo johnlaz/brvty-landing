@@ -3,7 +3,7 @@
   "name": "BRVTY \u2014 Book Intelligence",
   "short_name": "BRVTY",
   "description": "AI-powered book summaries with chapter audio, deep narration, cover art, and an audiobook shelf. Generate structured intelligence from any book in seconds. Listen on your commute.",
-  "start_url": "/brvty/",
+  "start_url": "/app/",
   "scope": "/brvty/",
   "display": "standalone",
   "display_override": [
