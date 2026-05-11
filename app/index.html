@@ -48,8 +48,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Mon
 
 /* LIBRARY SWIPE-TO-DELETE */
 .lib-swipe{position:relative;overflow:hidden;isolation:isolate;}
-.lib-swipe .lib-item{position:relative;z-index:2;will-change:transform;touch-action:pan-y;background:var(--bg);}
-.lib-swipe-action{position:absolute;inset:0 0 0 auto;width:110px;display:flex;align-items:stretch;justify-content:flex-end;z-index:1;}
+.lib-swipe .lib-item{position:relative;z-index:2;will-change:transform;touch-action:pan-y;background:var(--bg);transform:translateX(0);}
+.lib-swipe-action{position:absolute;inset:0 0 0 auto;width:110px;display:flex;align-items:stretch;justify-content:flex-end;z-index:1;opacity:0;pointer-events:none;transition:opacity .15s;}
+.lib-swipe.is-revealing .lib-swipe-action,.lib-swipe.is-open .lib-swipe-action{opacity:1;pointer-events:auto;}
 .lib-swipe-del-btn{box-sizing:border-box;width:88px;margin:6px 8px 6px 0;border:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#ff453a 0%,#d70015 100%);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;font-weight:600;letter-spacing:0.08em;border-radius:12px;cursor:pointer;box-shadow:0 4px 12px -4px rgba(215,0,21,0.5),inset 0 1px 0 rgba(255,255,255,0.18);}
 .lib-swipe-del-btn:active{transform:scale(0.96);filter:brightness(0.92);}
 
@@ -404,7 +405,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Mon
 .ab-controls{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:10px;}
 .ab-ctrl{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;padding:6px;line-height:1;}
 .ab-ctrl:hover{color:var(--text);}
-.ab-ctrl.ab-play{width:52px;height:52px;background:var(--blue);border-radius:50%;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(61,142,240,.3);transition:all .15s;}
+.ab-ctrl.ab-play{width:52px;height:52px;min-width:52px;min-height:52px;flex:0 0 52px;box-sizing:border-box;padding:0;background:var(--blue);border-radius:50%;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(61,142,240,.3);transition:all .15s;}
 .ab-ctrl.ab-play:hover{background:var(--blue2);transform:scale(1.05);}
 .ab-ctrl.ab-stop{font-size:18px;color:var(--text3);}
 .ab-ctrl.ab-stop:hover{color:var(--red);}
@@ -887,6 +888,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
 
 /* PLAY BUTTON for audiobooks */
 .ab-ctrl.ab-play{
+  width:56px;height:56px;min-width:56px;min-height:56px;flex:0 0 56px;
+  aspect-ratio:1/1;padding:0;
   background:linear-gradient(180deg,#1a9bff,#0a84ff);
   box-shadow:0 6px 18px rgba(10,132,255,0.32),0 1px 0 rgba(255,255,255,0.15) inset;
 }
@@ -1346,8 +1349,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
     <div class="ab-toolbar">
       <button class="ab-import-btn" onclick="importAudiobooks()">＋ Import Audio Files</button>
       <div class="ab-count" id="ab-count">0 files</div>
-      <button class="ab-import-btn" onclick="exportAllBookmarks()" style="background:none;border-color:var(--border2);color:var(--text3);font-size:9px;padding:6px 10px;" title="Export all bookmarks">🔖↓</button>
-      <button class="ab-import-btn" onclick="importBookmarks()" style="background:none;border-color:var(--border2);color:var(--text3);font-size:9px;padding:6px 10px;" title="Import bookmarks">🔖↑</button>
+      <button class="ab-import-btn" onclick="exportAllBookmarks()" style="background:none;border-color:var(--border2);color:var(--text3);font-size:9px;padding:6px 10px;display:inline-flex;align-items:center;gap:6px;" title="Export all bookmarks" aria-label="Export bookmarks"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z"/></svg><span aria-hidden="true">↓</span></button>
+      <button class="ab-import-btn" onclick="importBookmarks()" style="background:none;border-color:var(--border2);color:var(--text3);font-size:9px;padding:6px 10px;display:inline-flex;align-items:center;gap:6px;" title="Import bookmarks" aria-label="Import bookmarks"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z"/></svg><span aria-hidden="true">↑</span></button>
     </div>
     <div class="ab-size-warn" id="ab-size-warn"></div>
 
@@ -1370,7 +1373,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
         <button class="ab-ctrl" onclick="abSkip(10)" title="Forward 10s">↻</button>
         <button class="ab-ctrl" onclick="abSkip(30)" title="Forward 30s">⏭</button>
         <button class="ab-ctrl ab-stop" onclick="abStop()" title="Stop">⏹</button>
-        <button class="ab-ctrl" onclick="abAddBookmark()" title="Bookmark this position" style="font-size:16px;">🔖</button>
+        <button class="ab-ctrl" onclick="abAddBookmark()" title="Bookmark this position" aria-label="Bookmark this position"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z"/></svg></button>
       </div>
       <div class="ab-speed-row">
         <button class="sp-btn" onclick="abSetSpeed(0.75)">0.75×</button>
@@ -3710,7 +3713,7 @@ function renderLibrary(){
       ?`<div class="lib-cover"><img src="${b.coverUrl}" alt="" loading="lazy"></div>`
       :`<div class="lib-cover">📚</div>`;
     return`<div class="lib-swipe" data-id="${b.id}">
-      <div class="lib-swipe-action"><button class="lib-swipe-del-btn" onclick="delBook(event,'${b.id}')" aria-label="Delete">Delete</button></div>
+      <div class="lib-swipe-action" aria-hidden="true"><button class="lib-swipe-del-btn" onclick="delBook(event,'${b.id}')" aria-label="Delete" tabindex="-1">Delete</button></div>
       <div class="lib-item${currentBook?.id===b.id?' active':''}" data-id="${b.id}" onclick="libSelect('${b.id}')">
         <div class="lib-bar"></div>
         ${coverEl}
@@ -3719,7 +3722,6 @@ function renderLibrary(){
           <div class="lib-item-author">${esc(s.author||'Unknown')}</div>
           <div class="lib-meta"><div class="lib-dot ${ha?'a':'n'}"></div>${ha?'Audio ready':'No audio'} · ${new Date(b.createdAt).toLocaleDateString()}</div>
         </div>
-        <button class="lib-del" onclick="delBook(event,'${b.id}')" aria-label="Delete">✕</button>
       </div>
     </div>`;
   }).join('');
@@ -3734,16 +3736,31 @@ function attachSwipeHandlers(){
     const row=wrap.querySelector('.lib-item');
     let sx=0, sy=0, dx=0, dragging=false, locked=false, open=false;
     const REVEAL=88;
+    const H_THRESHOLD=18;  // horizontal travel before we engage swipe
+    const V_CANCEL=12;     // vertical travel that aborts swipe (scroll intent)
     const setX=(x,anim)=>{ row.style.transition=anim?'transform .25s cubic-bezier(.4,0,.2,1)':'none'; row.style.transform='translateX('+x+'px)'; };
-    const close=()=>{ open=false; setX(0,true); };
-    const openIt=()=>{ open=true; setX(-REVEAL,true); if(navigator.vibrate)navigator.vibrate(8); };
+    const close=()=>{ open=false; wrap.classList.remove('is-revealing','is-open'); setX(0,true); };
+    const openIt=()=>{ open=true; wrap.classList.remove('is-revealing'); wrap.classList.add('is-open'); setX(-REVEAL,true); if(navigator.vibrate)navigator.vibrate(8); };
     wrap.addEventListener('touchstart',e=>{ const t=e.touches[0]; sx=t.clientX; sy=t.clientY; dragging=true; locked=false; dx=0; },{passive:true});
-    wrap.addEventListener('touchmove',e=>{ if(!dragging)return; const t=e.touches[0]; const ddx=t.clientX-sx, ddy=t.clientY-sy; if(!locked){ if(Math.abs(ddx)>6||Math.abs(ddy)>6){ if(Math.abs(ddx)>Math.abs(ddy)){ locked=true; document.querySelectorAll('.lib-swipe').forEach(o=>{if(o!==wrap)o.querySelector('.lib-item').style.transform='translateX(0)'}); }else{ dragging=false; return; } } } if(locked){ e.preventDefault?e.preventDefault():0; const base=open?-REVEAL:0; let nx=base+ddx; if(nx>0) nx=nx*0.3; if(nx<-REVEAL*1.6) nx=-REVEAL*1.6+(nx+REVEAL*1.6)*0.3; dx=nx; setX(nx,false); } },{passive:false});
-    wrap.addEventListener('touchend',()=>{ if(!dragging)return; dragging=false; if(!locked) return; if(dx<-REVEAL/2) openIt(); else close(); });
-    wrap.addEventListener('touchcancel',()=>{ dragging=false; if(open)openIt(); else close(); });
+    wrap.addEventListener('touchmove',e=>{ if(!dragging)return; const t=e.touches[0]; const ddx=t.clientX-sx, ddy=t.clientY-sy;
+      if(!locked){
+        // Bail out the moment user is clearly scrolling vertically
+        if(Math.abs(ddy)>V_CANCEL && Math.abs(ddy)>Math.abs(ddx)){ dragging=false; return; }
+        // Only engage swipe after a clear, intentional left drag
+        if(ddx < -H_THRESHOLD && Math.abs(ddx) > Math.abs(ddy)*1.5){
+          locked=true;
+          wrap.classList.add('is-revealing');
+          // close any other open rows
+          document.querySelectorAll('.lib-swipe').forEach(o=>{ if(o!==wrap){ o.classList.remove('is-revealing','is-open'); const r=o.querySelector('.lib-item'); if(r) r.style.transform='translateX(0)'; }});
+        } else { return; }
+      }
+      if(locked){ if(e.cancelable) e.preventDefault(); const base=open?-REVEAL:0; let nx=base+ddx; if(!open) nx = Math.min(0, nx + H_THRESHOLD); // hide the threshold deadzone so motion feels 1:1
+        if(nx>0) nx=nx*0.3; if(nx<-REVEAL*1.6) nx=-REVEAL*1.6+(nx+REVEAL*1.6)*0.3; dx=nx; setX(nx,false); } },{passive:false});
+    wrap.addEventListener('touchend',()=>{ if(!dragging)return; dragging=false; if(!locked){ return; } wrap.classList.remove('is-revealing'); if(dx<-REVEAL/2) openIt(); else close(); });
+    wrap.addEventListener('touchcancel',()=>{ dragging=false; locked=false; wrap.classList.remove('is-revealing'); if(open)openIt(); else close(); });
   });
   // Close swipe when tapping elsewhere
-  if(!window.__libSwipeDocBound){ window.__libSwipeDocBound=1; document.addEventListener('click',e=>{ if(!e.target.closest('.lib-swipe')) document.querySelectorAll('.lib-swipe .lib-item').forEach(r=>r.style.transform='translateX(0)'); }); }
+  if(!window.__libSwipeDocBound){ window.__libSwipeDocBound=1; document.addEventListener('click',e=>{ if(!e.target.closest('.lib-swipe-del-btn')){ document.querySelectorAll('.lib-swipe').forEach(w=>{ if(!e.target.closest('.lib-swipe')||e.target.closest('.lib-swipe')!==w){ w.classList.remove('is-revealing','is-open'); const r=w.querySelector('.lib-item'); if(r) r.style.transform='translateX(0)'; }}); }}); }
 }
 function libSelect(id){const b=library.find(x=>x.id===id);if(!b)return;trackRecent(id);loadBook(b);switchTab('summary');}
 function filterLibrary(q){libFilter=q;renderLibrary();}
