@@ -76,42 +76,42 @@
   "screenshots": [
     {
       "src": "screenshot-01.jpg",
-      "sizes": "1080x2160",
+      "sizes": "1290x2796",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Splash screen"
     },
     {
       "src": "screenshot-02.jpg",
-      "sizes": "1080x2160",
+      "sizes": "1290x2796",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Generate a book summary"
     },
     {
       "src": "screenshot-03.jpg",
-      "sizes": "1080x2160",
+      "sizes": "1290x2796",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Rich structured summary view"
     },
     {
       "src": "screenshot-04.jpg",
-      "sizes": "1080x2160",
+      "sizes": "1290x2796",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Audio player with chapter modes"
     },
     {
       "src": "screenshot-05.jpg",
-      "sizes": "1080x2160",
+      "sizes": "1290x2796",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Smart library with covers"
     },
     {
       "src": "screenshot-06.jpg",
-      "sizes": "1080x2160",
+      "sizes": "1290x2796",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Audiobook shelf"
