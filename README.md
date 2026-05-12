@@ -1,4 +1,4 @@
-# BRVTY — Book Intelligence
+# BRVTY — Book Intelligence -Landing Page
 
 **Turn any book into a structured deep dive and a commute-ready audio experience — in seconds.**
 
