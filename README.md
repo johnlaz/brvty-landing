@@ -73,4 +73,4 @@ Everything is stored locally on your device. No account. No cloud sync. No data 
 
 ---
 
-*BRVTY v6 — johnlaz.github.io/brvty*
+LazLab © 2025 LAZLAB Creations — All Rights Reserved
