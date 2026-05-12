@@ -978,6 +978,86 @@
   }
   .is-desc { font-size: 0.8rem; color: var(--mist); line-height: 1.65; }
 
+  /* ── INSTALL CHOICE CARDS ── */
+  .install-choice-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin-bottom: 2rem; text-align: left;
+  }
+  .install-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+    display: flex; flex-direction: column; gap: 0.5rem;
+    position: relative; overflow: hidden;
+  }
+  .install-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .install-card.featured { border-color: rgba(43,127,255,0.4); }
+  .install-card.featured::before {
+    content: 'RECOMMENDED';
+    position: absolute; top: 0.6rem; right: 0.75rem;
+    font-family: var(--font-mono); font-size: 0.5rem;
+    letter-spacing: 0.18em; color: var(--blue); opacity: 0.7;
+  }
+  .ic-icon { font-size: 2rem; margin-bottom: 0.25rem; }
+  .ic-title {
+    font-size: 0.95rem; font-weight: 600; color: var(--snow);
+  }
+  .ic-sub {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 0.1rem;
+  }
+  .ic-desc { font-size: 0.78rem; color: var(--mist); line-height: 1.6; }
+  .ic-btn {
+    margin-top: 0.75rem; padding: 0.65rem 1.25rem;
+    background: var(--blue); color: #fff;
+    border: none; border-radius: 6px;
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; width: 100%; transition: opacity 0.2s;
+  }
+  .ic-btn:hover { opacity: 0.85; }
+  .ic-btn.outline {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--mist);
+  }
+  .ic-btn.outline:hover { border-color: var(--blue); color: var(--snow); }
+
+  /* iOS instruction sheet */
+  .ios-sheet {
+    display: none; background: var(--panel); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem;
+    text-align: left;
+  }
+  .ios-sheet.visible { display: block; }
+  .ios-sheet h4 {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 1rem;
+  }
+  .ios-step {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    margin-bottom: 0.75rem; font-size: 0.82rem; color: var(--mist); line-height: 1.55;
+  }
+  .ios-num {
+    flex-shrink: 0; width: 1.4rem; height: 1.4rem;
+    border-radius: 50%; background: rgba(43,127,255,0.15);
+    border: 1px solid rgba(43,127,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; color: var(--blue); font-weight: 600;
+  }
+  .install-status {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.12em; text-align: center;
+    color: var(--ash); margin-top: 1rem;
+  }
+  .install-status.success { color: #4ade80; }
+  .install-status.error { color: #f87171; }
+
+  @media (max-width: 600px) {
+    .install-choice-grid { grid-template-columns: 1fr; }
+  }
+
   
 
   /* ── AMAZON BUTTON ── */
@@ -1451,28 +1531,43 @@
   <div class="section-inner">
     <div class="install-inner">
       <div class="section-kicker reveal" style="justify-content:center;">Progressive Web App</div>
-      <h2 class="reveal reveal-delay-1">No App Store.<br><em>No Waiting.</em></h2>
-      <p class="reveal reveal-delay-2">BRVTY is a PWA — install it directly from your browser in seconds. Works on iOS, Android, and desktop. No account. No subscription. No data harvested.</p>
-      <div class="install-steps reveal reveal-delay-2">
-        <div class="install-step">
-          <span class="is-icon">📱</span>
-          <div class="is-label">iOS / Safari</div>
-          <div class="is-desc">Tap the Share icon, then "Add to Home Screen." BRVTY lives on your home screen like a native app.</div>
+      <h2 class="reveal reveal-delay-1">Two Ways to<br><em>Own Your Home Screen.</em></h2>
+      <p class="reveal reveal-delay-2">Add the landing page as a shortcut, install the full app — or both. No App Store. No account. No subscription.</p>
+
+      <!-- Dynamic install cards — populated by JS -->
+      <div class="install-choice-grid reveal reveal-delay-2" id="installGrid">
+
+        <!-- Card 1: Shortcut / landing page -->
+        <div class="install-card" id="cardShortcut">
+          <div class="ic-icon">🔖</div>
+          <div class="ic-sub">Home Screen</div>
+          <div class="ic-title">BRVTY Shortcut</div>
+          <div class="ic-desc">Pin the BRVTY landing page to your home screen. Great as a quick-launch bookmark with a rich icon.</div>
+          <button class="ic-btn outline" id="btnShortcut">Add Shortcut</button>
         </div>
-        <div class="install-step">
-          <span class="is-icon">🤖</span>
-          <div class="is-label">Android / Chrome</div>
-          <div class="is-desc">Tap the three-dot menu and select "Add to Home Screen" or "Install App" when Chrome prompts you.</div>
+
+        <!-- Card 2: Full app install -->
+        <div class="install-card featured" id="cardApp">
+          <div class="ic-icon">⚡</div>
+          <div class="ic-sub">Full PWA</div>
+          <div class="ic-title">Install BRVTY App</div>
+          <div class="ic-desc">Install the full AI book intelligence app — offline-ready, with audio narration, library, and audiobook shelf.</div>
+          <button class="ic-btn" id="btnApp">Install App</button>
         </div>
-        <div class="install-step">
-          <span class="is-icon">💻</span>
-          <div class="is-label">Desktop</div>
-          <div class="is-desc">Click the install icon in Chrome's address bar, or use the browser menu to install the PWA.</div>
-        </div>
-      </div>
+
       </div>
 
-      <div class="reveal reveal-delay-3" style="text-align:center;">
+      <!-- iOS instruction sheet (shown when iOS detected) -->
+      <div class="ios-sheet" id="iosSheet">
+        <h4 id="iosSheetTitle">Add to Home Screen — iOS</h4>
+        <div class="ios-step"><div class="ios-num">1</div><span id="iosStep1"></span></div>
+        <div class="ios-step"><div class="ios-num">2</div><span id="iosStep2"></span></div>
+        <div class="ios-step"><div class="ios-num">3</div><span id="iosStep3"></span></div>
+      </div>
+
+      <div class="install-status" id="installStatus"></div>
+
+      <div class="reveal reveal-delay-3" style="text-align:center;margin-top:2rem;">
         <a href="./app/" class="btn-primary" style="font-size:0.78rem;padding:1rem 2.5rem;display:inline-flex;">
           ⚡ Launch BRVTY Now
         </a>
@@ -1641,6 +1736,147 @@ window.addEventListener('scroll', () => {
   document.querySelector('header').style.borderBottomColor =
     window.scrollY > 10 ? 'rgba(43,127,255,0.3)' : 'var(--border)';
 }, { passive: true });
+</script>
+
+<!-- ── SMART INSTALL LOGIC ── -->
+<script>
+(function() {
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                    || window.navigator.standalone === true;
+
+  let deferredShortcutPrompt = null; // for landing page install
+  let deferredAppPrompt = null;      // for /app/ install
+  let activeTarget = null;           // 'shortcut' | 'app'
+
+  const manifestLink = document.querySelector('link[rel="manifest"]');
+  const status = document.getElementById('installStatus');
+  const iosSheet = document.getElementById('iosSheet');
+  const btnShortcut = document.getElementById('btnShortcut');
+  const btnApp = document.getElementById('btnApp');
+
+  function setStatus(msg, type) {
+    status.textContent = msg;
+    status.className = 'install-status' + (type ? ' ' + type : '');
+  }
+
+  // Capture the beforeinstallprompt — fires for whichever manifest is active
+  // We capture it once for the landing page (default manifest = /)
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    if (!deferredShortcutPrompt) {
+      deferredShortcutPrompt = e;
+    }
+  });
+
+  // ── SHORTCUT BUTTON ──
+  btnShortcut.addEventListener('click', async () => {
+    if (isIOS) {
+      showIOSSheet('shortcut');
+      return;
+    }
+    if (deferredShortcutPrompt) {
+      // Manifest is already pointing at / — fire directly
+      try {
+        deferredShortcutPrompt.prompt();
+        const { outcome } = await deferredShortcutPrompt.userChoice;
+        deferredShortcutPrompt = null;
+        if (outcome === 'accepted') {
+          setStatus('✓ Shortcut added to home screen', 'success');
+          btnShortcut.textContent = 'Added ✓';
+          btnShortcut.disabled = true;
+        } else {
+          setStatus('Shortcut install dismissed.', '');
+        }
+      } catch(e) {
+        setStatus('Install prompt unavailable — use browser menu.', '');
+      }
+    } else {
+      setStatus('Use your browser menu → "Add to Home Screen" to pin this page.', '');
+    }
+  });
+
+  // ── APP INSTALL BUTTON ──
+  btnApp.addEventListener('click', async () => {
+    if (isIOS) {
+      showIOSSheet('app');
+      return;
+    }
+    setStatus('Preparing app install…', '');
+
+    // Swap manifest to /app/manifest.json so Chrome reads app's rich manifest
+    manifestLink.href = './app/manifest.json';
+
+    // Small delay to let the browser re-read the manifest
+    await new Promise(r => setTimeout(r, 300));
+
+    if (deferredShortcutPrompt) {
+      // Reuse the deferred prompt — it will now install /app/ scope
+      try {
+        deferredShortcutPrompt.prompt();
+        const { outcome } = await deferredShortcutPrompt.userChoice;
+        deferredShortcutPrompt = null;
+        manifestLink.href = 'manifest.json'; // restore
+        if (outcome === 'accepted') {
+          setStatus('✓ BRVTY App installed!', 'success');
+          btnApp.textContent = 'Installed ✓';
+          btnApp.disabled = true;
+        } else {
+          setStatus('App install dismissed.', '');
+        }
+      } catch(e) {
+        manifestLink.href = 'manifest.json';
+        fallbackToAppPage();
+      }
+    } else {
+      // No prompt captured — navigate user to /app/ where prompt fires naturally
+      fallbackToAppPage();
+    }
+  });
+
+  function fallbackToAppPage() {
+    setStatus('Opening app — install from there for the full experience.', '');
+    setTimeout(() => { window.location.href = './app/'; }, 900);
+  }
+
+  // ── iOS INSTRUCTION SHEET ──
+  function showIOSSheet(target) {
+    const isApp = target === 'app';
+    document.getElementById('iosSheetTitle').textContent = isApp
+      ? 'Install BRVTY App — iOS Safari'
+      : 'Add Shortcut — iOS Safari';
+
+    const url = isApp ? 'brvty.net/app/' : 'brvty.net';
+
+    document.getElementById('iosStep1').innerHTML = isApp
+      ? `Open <strong>brvty.net/app/</strong> in Safari (tap to open: <a href="./app/" style="color:var(--blue)">Launch App</a>)`
+      : `Make sure you're on <strong>brvty.net</strong> in Safari`;
+
+    document.getElementById('iosStep2').innerHTML =
+      `Tap the <strong>Share</strong> button (the box with the arrow pointing up) at the bottom of Safari`;
+
+    document.getElementById('iosStep3').innerHTML =
+      `Scroll down and tap <strong>"Add to Home Screen"</strong> — then tap <strong>Add</strong> in the top right`;
+
+    iosSheet.classList.add('visible');
+    iosSheet.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ── ALREADY INSTALLED STATE ──
+  if (isStandalone) {
+    setStatus('✓ BRVTY is already installed on this device.', 'success');
+    btnShortcut.textContent = 'Already Added';
+    btnShortcut.disabled = true;
+    btnApp.textContent = 'Already Installed';
+    btnApp.disabled = true;
+  }
+
+  // ── DESKTOP: show hint in address bar ──
+  window.addEventListener('appinstalled', () => {
+    setStatus('✓ Installed successfully!', 'success');
+  });
+})();
 </script>
 </body>
 </html>
