@@ -1,0 +1,45 @@
+<!-- PWA Meta Tags -->
+<meta name="theme-color" content="#c9a227" />
+<meta name="description" content="AI-powered book intelligence with audio narration for commutes and car rides" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="BRVTY" />
+<meta name="mobile-web-app-capable" content="yes" />
+
+<!-- Apple Splash Screens -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23080a0d' width='180' height='180'/><rect fill='%23c9a227' x='20' y='20' width='140' height='140' rx='32'/><text x='90' y='130' font-size='100' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>B</text></svg>" />
+
+<!-- Manifest -->
+<link rel="manifest" href="/brvty/manifest.json" />
+
+<!-- Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/brvty/sw.js', { scope: '/brvty/' })
+        .then(registration => {
+          console.log('✓ SW registered:', registration);
+          
+          // Check for updates periodically
+          setInterval(() => {
+            registration.update();
+          }, 60000);
+          
+          // Listen for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('✓ New SW available - prompt user to reload');
+                // You can show a toast/banner here prompting the user to reload
+                window.dispatchEvent(new CustomEvent('swupdate'));
+              }
+            });
+          });
+        })
+        .catch(err => console.error('✗ SW registration failed:', err));
+    });
+  }
+</script>
