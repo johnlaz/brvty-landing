@@ -3,17 +3,20 @@ const RUNTIME_CACHE = 'brvty-runtime-v1';
 const CRITICAL_URLS = [
   '/',
   '/index.html',
-  '/manifest.json',
-  '/style.css',
-  '/script.js'
+  '/manifest.json'
 ];
 
 // Install event - cache critical resources
 self.addEventListener('install', event => {
   event.waitUntil(
     (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      await cache.addAll(CRITICAL_URLS);
+      try {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.addAll(CRITICAL_URLS.filter(url => url !== '/' && url !== '/index.html'));
+        // Don't cache / and /index.html as they change frequently
+      } catch (e) {
+        console.log('Cache install error:', e);
+      }
       self.skipWaiting();
     })()
   );
@@ -36,7 +39,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event - network-first for API, cache-first for assets
+// Fetch event - network-first for HTML/API, cache-first for assets
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
@@ -46,23 +49,33 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // API calls - network first with fallback
+  // Skip localhost and chrome extensions
+  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.protocol === 'chrome-extension:') {
+    return;
+  }
+
+  // API calls and external requests - network first
   if (url.pathname.includes('/api/') || 
       url.hostname !== self.location.hostname ||
       request.url.includes('googleapis') ||
-      request.url.includes('openai')) {
+      request.url.includes('openai') ||
+      request.url.includes('gemini') ||
+      request.url.includes('groq')) {
     return event.respondWith(networkFirst(request));
   }
 
-  // Static assets - cache first
+  // Static assets (CSS, JS, images, fonts) - cache first
   if (shouldCache(request)) {
     return event.respondWith(cacheFirst(request));
   }
 
-  // HTML - network first
+  // HTML and documents - network first
   if (request.destination === 'document') {
     return event.respondWith(networkFirst(request));
   }
+
+  // Default: network first
+  return event.respondWith(networkFirst(request));
 });
 
 async function cacheFirst(request) {
@@ -116,7 +129,11 @@ function shouldCache(request) {
     destination === 'image' ||
     destination === 'font' ||
     url.includes('.woff') ||
-    url.includes('.woff2')
+    url.includes('.woff2') ||
+    url.includes('.png') ||
+    url.includes('.jpg') ||
+    url.includes('.jpeg') ||
+    url.includes('.gif')
   );
 }
 

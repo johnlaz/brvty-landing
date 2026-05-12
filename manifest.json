@@ -1,83 +1,54 @@
 {
   "name": "BRVTY - AI Book Intelligence",
   "short_name": "BRVTY",
-  "description": "AI-powered book intelligence with audio narration for commutes and car rides",
-  "start_url": "/brvty/",
-  "scope": "/brvty/",
+  "description": "AI-powered book summaries with audio narration for commutes and car rides",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#080a0d",
-  "theme_color": "#c9a227",
+  "background_color": "#080c12",
+  "theme_color": "#2b7fff",
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23080a0d' width='192' height='192'/><rect fill='%23c9a227' x='32' y='32' width='128' height='128' rx='8'/><text x='96' y='120' font-size='96' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>B</text></svg>",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23080a0d' width='512' height='512'/><rect fill='%23c9a227' x='64' y='64' width='384' height='384' rx='24'/><text x='256' y='340' font-size='280' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>B</text></svg>",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23c9a227' width='192' height='192'/><text x='96' y='140' font-size='120' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>B</text></svg>",
+      "src": "icon-192-maskable.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23c9a227' width='512' height='512'/><text x='256' y='380' font-size='320' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>B</text></svg>",
+      "src": "icon-512-maskable.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%23080a0d' width='540' height='720'/><rect fill='%23c9a227' x='40' y='60' width='460' height='600' rx='12'/><text x='270' y='380' font-size='120' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>BRVTY</text></svg>",
-      "sizes": "540x720",
-      "type": "image/svg+xml",
-      "form_factor": "narrow"
     }
   ],
   "categories": ["books", "productivity", "education"],
   "shortcuts": [
     {
-      "name": "My Library",
-      "short_name": "Library",
-      "description": "View your bookshelf",
-      "url": "/brvty/?route=library",
+      "name": "Launch BRVTY",
+      "short_name": "Launch",
+      "description": "Start the BRVTY app",
+      "url": "/?launch=true",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%23c9a227' width='96' height='96'/><text x='48' y='70' font-size='60' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>📚</text></svg>",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Search Books",
-      "short_name": "Search",
-      "description": "Find and add books",
-      "url": "/brvty/?route=search",
-      "icons": [
-        {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%232dd4bf' width='96' height='96'/><text x='48' y='70' font-size='60' font-weight='bold' fill='%23080a0d' text-anchor='middle' font-family='Georgia,serif'>🔍</text></svg>",
-          "sizes": "96x96"
+          "src": "icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
-  ],
-  "share_target": {
-    "action": "/brvty/?action=share",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  }
+  ]
 }
