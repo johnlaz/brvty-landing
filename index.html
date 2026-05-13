@@ -10,38 +10,16 @@
 <meta property="og:title" content="BRVTY — The Shortcut">
 <meta property="og:description" content="AI-generated book summaries in 2–6 minutes. Bypass the fluff. Buy the books you love.">
 <title>BRVTY — The Shortcut</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
 
-<!-- Service Worker Registration -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('sw.js')
-        .then(registration => {
-          console.log('✓ Service Worker registered');
-          
-          // Check for updates every 60 seconds
-          setInterval(() => {
-            registration.update();
-          }, 60000);
-          
-          // Listen for new versions
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('✓ New version available');
-                window.dispatchEvent(new CustomEvent('swupdate'));
-              }
-            });
-          });
-        })
-        .catch(err => console.error('✗ Service Worker registration failed:', err));
-    });
-  }
-</script>
+<!-- Canonical link to app -->
+<link rel="canonical" href="https://brvty.net/app/">
+
+<!-- Icon links point to /app/ -->
+<link rel="apple-touch-icon" href="/app/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/app/icon-192.png">
+
+<!-- NO service worker registration at root -->
+<!-- /app/sw.js handles all service worker and caching -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1625,7 +1603,7 @@
   <div class="footer-bottom">
     <p>
       <img id="lazlab-egg"
-           src="lazlab-96.png"
+           src="/app/lazlab-96.png"
            alt="LazLab"
            style="width:18px;height:18px;border-radius:4px;opacity:0.35;cursor:default;vertical-align:middle;margin-right:6px;transition:opacity 0.3s;"
            title="">
