@@ -73,6 +73,34 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Mon
 .page.active{display:flex;}
 .page::-webkit-scrollbar{display:none;}
 
+/* ── SHARE MODAL ── */
+.share-modal{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:none;flex-direction:column;z-index:200;opacity:0;transition:opacity .2s;padding-top:var(--safe-t);}
+.share-modal.open{display:flex;opacity:1;}
+.share-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.share-title{font-size:14px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);}
+.share-close{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:4px;transition:color .15s;}
+.share-close:hover{color:var(--text);}
+.share-content{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch;}
+.share-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s;}
+.share-item:active{background:var(--surface2);border-color:var(--blue);}
+.share-item.selected{border-color:var(--blue);background:var(--blue-dim);}
+.share-item-cover{width:48px;height:72px;border-radius:var(--r);background:var(--bg);border:1px solid var(--border);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.share-item-cover img{width:100%;height:100%;object-fit:cover;}
+.share-item-info{flex:1;min-width:0;}
+.share-item-title{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;color:var(--text);line-height:1.3;margin-bottom:2px;}
+.share-item-author{font-size:10px;color:var(--text3);margin-bottom:6px;}
+.share-item-audio{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text3);}
+.share-item-audio input{width:14px;height:14px;cursor:pointer;}
+.share-checkbox{width:18px;height:18px;border:2px solid var(--border2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:12px;font-weight:600;}
+.share-item.selected .share-checkbox{background:var(--blue);border-color:var(--blue);color:#fff;}
+.share-footer{background:var(--surface);border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap-reverse;justify-content:flex-end;}
+.share-btn{flex:1;min-width:130px;padding:11px;border:none;border-radius:var(--r);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all .15s;}
+.share-btn-export{background:linear-gradient(135deg,var(--blue) 0%,#2a6abf 100%);color:#fff;}
+.share-btn-export:active{transform:scale(.98);}
+.share-btn-export:disabled{opacity:.4;cursor:not-allowed;}
+.share-btn-cancel{background:var(--surface2);color:var(--text3);border:1px solid var(--border);flex:0 1 100px;min-width:100px;}
+.share-btn-cancel:active{background:var(--bg);}
+
 /* BOTTOM NAV */
 #botnav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--botbar) + var(--safe-b));padding-bottom:var(--safe-b);background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;}
 .nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--text3);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;border:none;background:none;padding:0;transition:color .15s;position:relative;}
@@ -1339,6 +1367,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
           <button class="sort-btn" data-sort="audio" onclick="setSort('audio')">Audio</button>
           <button class="sort-btn" data-sort="difficulty" onclick="setSort('difficulty')">Level</button>
         </div>
+        <button class="icon-btn" id="lib-share-btn" onclick="openShareModal()" title="Share books" style="flex-shrink:0;">⬆️</button>
       </div>
     </div>
     <div id="lib-list"></div>
@@ -4120,6 +4149,319 @@ async function checkStorageWarning(){
   else if(mb>120) toast(`Storage at ${mb}MB of ~200MB recommended limit`);
 }
 
+/* ══════════════════════════════════════ SHARE MODAL */
+let selectedBooks=new Set();
+function openShareModal(){
+  const modal=document.getElementById('share-modal');
+  const content=document.getElementById('share-content');
+  selectedBooks.clear();
+  
+  // Render all books
+  const sortedLib=[...library].sort((a,b)=>b.id-a.id);
+  content.innerHTML=sortedLib.map(book=>{
+    const hasAudio=Object.keys(book.audioFiles||{}).some(k=>(book.audioFiles[k]?.pcm?.byteLength||0)>0)||(Object.keys(book.chapters||{}).length>0);
+    const coverEl=book.coverUrl
+      ?`<img src="${book.coverUrl}" alt="" style="width:100%;height:100%;object-fit:cover;">`
+      :`<span style="font-size:18px;">📚</span>`;
+    return`<div class="share-item" onclick="toggleShareItem('${book.id}',event)" data-book-id="${book.id}">
+      <div class="share-checkbox">✓</div>
+      <div class="share-item-cover">${coverEl}</div>
+      <div class="share-item-info">
+        <div class="share-item-title">${esc(book.title||'Untitled')}</div>
+        <div class="share-item-author">${esc(book.author||'Unknown Author')}</div>
+        ${hasAudio?`<div class="share-item-audio">
+          <input type="checkbox" class="audio-check" data-book-id="${book.id}" onclick="event.stopPropagation()" onchange="updateShareState()">
+          <span>Include audio</span>
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  modal.classList.add('open');
+}
+function closeShareModal(){
+  document.getElementById('share-modal').classList.remove('open');
+  selectedBooks.clear();
+}
+function toggleShareItem(bookId,e){
+  e.preventDefault();
+  const item=document.querySelector(`[data-book-id="${bookId}"]`);
+  if(selectedBooks.has(bookId)){
+    selectedBooks.delete(bookId);
+    item.classList.remove('selected');
+  }else{
+    selectedBooks.add(bookId);
+    item.classList.add('selected');
+  }
+  updateShareState();
+}
+function updateShareState(){
+  const pngBtn=document.getElementById('share-png-btn');
+  const jsonBtn=document.getElementById('share-json-btn');
+  const disabled=selectedBooks.size===0;
+  pngBtn.disabled=disabled;
+  jsonBtn.disabled=disabled;
+}
+async function exportPNGCards(){
+  if(selectedBooks.size===0)return;
+  const pngBtn=document.getElementById('share-png-btn');
+  pngBtn.disabled=true;
+  
+  try{
+    const booksToExport=Array.from(selectedBooks).map(id=>library.find(b=>b.id===id)).filter(b=>b);
+    console.log('Creating marketing card for',booksToExport.length,'books');
+    
+    await exportMarketingCard(booksToExport);
+    toast(`✓ Marketing card exported!`);
+  }catch(err){
+    console.error('PNG export error:',err);
+    toast('Card export failed: '+err.message,'err');
+  }finally{
+    pngBtn.disabled=selectedBooks.size===0;
+  }
+}
+
+async function exportJSON_Books(){
+  if(selectedBooks.size===0)return;
+  const jsonBtn=document.getElementById('share-json-btn');
+  jsonBtn.disabled=true;
+  
+  try{
+    const booksToExport=Array.from(selectedBooks).map(id=>library.find(b=>b.id===id)).filter(b=>b);
+    console.log('Creating library import file with',booksToExport.length,'books');
+    
+    // Check if audio should be included (check first book's checkbox, applies to all)
+    const firstBookEl=document.querySelector(`[data-book-id="${Array.from(selectedBooks)[0]}"]`);
+    const audioCheckEl=firstBookEl?.querySelector('.audio-check');
+    const includeAudio=!audioCheckEl || audioCheckEl.checked;
+    
+    // Create single export file with all books
+    const exportData={
+      version:'1.0',
+      exportedAt:new Date().toISOString(),
+      bookCount:booksToExport.length,
+      includesAudio:includeAudio,
+      books:booksToExport.map(book=>{
+        const cleanBook={
+          id:book.id,
+          title:book.title,
+          author:book.author,
+          summary:book.summary,
+          thesis:book.thesis,
+          coverUrl:book.coverUrl,
+          themes:book.themes,
+          rating:book.rating,
+          status:book.status,
+          addedAt:book.addedAt,
+          notes:book.notes
+        };
+        
+        // Add audio only if requested
+        if(includeAudio){
+          if(book.audioFiles) cleanBook.audioFiles=book.audioFiles;
+          if(book.chapters) cleanBook.chapters=book.chapters;
+        }
+        
+        return cleanBook;
+      })
+    };
+    
+    const filename=`brvty-library-${new Date().toISOString().split('T')[0]}.json`;
+    console.log('Exporting JSON:',filename,'(audio:',includeAudio?'yes':'no',')');
+    exportJSON_File(exportData,filename);
+    toast(`✓ Library file exported (${booksToExport.length} books)!`);
+  }catch(err){
+    console.error('JSON export error:',err);
+    toast('Export failed: '+err.message,'err');
+  }finally{
+    jsonBtn.disabled=selectedBooks.size===0;
+  }
+}
+async function exportMarketingCard(books){
+  const canvas=document.createElement('canvas');
+  canvas.width=1200;
+  canvas.height=630;
+  const ctx=canvas.getContext('2d');
+  
+  // Background with gradient
+  const grad=ctx.createLinearGradient(0,0,1200,630);
+  grad.addColorStop(0,'#080a0d');
+  grad.addColorStop(0.5,'#12141a');
+  grad.addColorStop(1,'#1c1f29');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,1200,630);
+  
+  // Add subtle border
+  ctx.strokeStyle='rgba(255,255,255,0.1)';
+  ctx.lineWidth=2;
+  ctx.strokeRect(0,0,1200,630);
+  
+  // BRVTY Logo + Title (top left)
+  ctx.fillStyle='#3d8ef0';
+  ctx.font='bold 48px Bebas Neue, sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('BRVTY',60,90);
+  
+  ctx.fillStyle='rgba(255,255,255,0.5)';
+  ctx.font='14px DM Mono, monospace';
+  ctx.fillText('Book Intelligence Platform',60,110);
+  
+  // Main message
+  ctx.fillStyle='#dde2e8';
+  ctx.font='bold 42px Cormorant Garamond, serif';
+  ctx.textAlign='left';
+  ctx.fillText(`${books.length} Book${books.length>1?'s':''} to Discover`,60,180);
+  
+  ctx.fillStyle='#8a9099';
+  ctx.font='18px Cormorant Garamond, serif';
+  ctx.textAlign='left';
+  ctx.fillText('Import these curated titles to your library',60,215);
+  
+  // Book covers grid
+  const coverSize=120;
+  const gap=20;
+  const maxBooksPerRow=4;
+  const startX=60;
+  let startY=280;
+  
+  for(let i=0;i<Math.min(books.length,8);i++){
+    const book=books[i];
+    const row=Math.floor(i/maxBooksPerRow);
+    const col=i%maxBooksPerRow;
+    const x=startX+(col*(coverSize+gap));
+    const y=startY+(row*(coverSize+30));
+    
+    // Cover placeholder/image
+    if(book.coverUrl){
+      try{
+        const img=await loadImage(book.coverUrl);
+        ctx.drawImage(img,x,y,coverSize,coverSize);
+      }catch(e){
+        ctx.fillStyle='#2a3040';
+        ctx.fillRect(x,y,coverSize,coverSize);
+      }
+    }else{
+      ctx.fillStyle='#2a3040';
+      ctx.fillRect(x,y,coverSize,coverSize);
+      ctx.fillStyle='#666';
+      ctx.font='32px serif';
+      ctx.textAlign='center';
+      ctx.fillText('📚',x+coverSize/2,y+coverSize/2+10);
+    }
+    
+    // Border
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.lineWidth=1;
+    ctx.strokeRect(x,y,coverSize,coverSize);
+    
+    // Book title below
+    ctx.fillStyle='#aaa';
+    ctx.font='10px DM Mono, monospace';
+    ctx.textAlign='center';
+    const title=(book.title||'Untitled').slice(0,15);
+    ctx.fillText(title,x+coverSize/2,y+coverSize+18);
+  }
+  
+  // If more than 8 books, show count
+  if(books.length>8){
+    ctx.fillStyle='#3d8ef0';
+    ctx.font='18px Bebas Neue, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(`+${books.length-8} more`,60+(maxBooksPerRow*(coverSize+gap))/2+30,startY+100);
+  }
+  
+  // Bottom CTA
+  ctx.fillStyle='rgba(61,142,240,0.2)';
+  ctx.fillRect(0,560,1200,70);
+  
+  ctx.fillStyle='#3d8ef0';
+  ctx.font='bold 24px Bebas Neue, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('IMPORT TO YOUR LIBRARY',600,595);
+  
+  ctx.fillStyle='#8a9099';
+  ctx.font='12px DM Mono, monospace';
+  ctx.textAlign='center';
+  ctx.fillText('Share this card or import the JSON file to add books to your collection',600,615);
+  
+  // Download
+  return new Promise((resolve,reject)=>{
+    canvas.toBlob(
+      function(blob){
+        if(!blob){
+          reject(new Error('Blob creation failed'));
+          return;
+        }
+        try{
+          const url=URL.createObjectURL(blob);
+          const link=document.createElement('a');
+          link.href=url;
+          link.download=`brvty-share-${new Date().toISOString().split('T')[0]}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(()=>{
+            URL.revokeObjectURL(url);
+            resolve();
+          },100);
+        }catch(e){
+          reject(e);
+        }
+      },
+      'image/png',
+      0.95
+    );
+  });
+}
+function wrapText(text,maxWidth){
+  const canvas=document.createElement('canvas');
+  const ctx=canvas.getContext('2d');
+  ctx.font='14px sans-serif';
+  const lines=[];
+  let currentLine='';
+  text.split(' ').forEach(word=>{
+    const testLine=currentLine+(currentLine?' ':'')+word;
+    if(ctx.measureText(testLine).width>maxWidth){
+      if(currentLine) lines.push(currentLine);
+      currentLine=word;
+    }else{
+      currentLine=testLine;
+    }
+  });
+  if(currentLine) lines.push(currentLine);
+  return lines;
+}
+function loadImage(src){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>resolve(img);
+    img.onerror=reject;
+    img.src=src;
+  });
+}
+function exportJSON_File(obj,filename){
+  // Create a safe serializable copy
+  const safeObj=JSON.parse(JSON.stringify(obj,(key,val)=>{
+    // Skip non-serializable types
+    if(val instanceof ArrayBuffer || val instanceof Uint8Array) return '[ArrayBuffer]';
+    if(val instanceof AudioBuffer) return '[AudioBuffer]';
+    if(val instanceof Image) return '[Image]';
+    if(val instanceof HTMLElement) return '[HTMLElement]';
+    if(typeof val==='function') return undefined;
+    return val;
+  }));
+  
+  const dataStr=JSON.stringify(safeObj,null,2);
+  const blob=new Blob([dataStr],{type:'application/json'});
+  const link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download=filename;
+  link.click();
+  
+  // Clean up after a short delay to allow download to start
+  setTimeout(()=>URL.revokeObjectURL(link.href),100);
+}
+
 /* ══════════════════════════════════════ BOOT */
 async function boot(){
   buildWaveform();loadPrefs();
@@ -4238,5 +4580,20 @@ boot();
   }, {passive:true, capture:true});
 })();
 </script>
+<!-- SHARE MODAL -->
+<div class="share-modal" id="share-modal">
+  <div class="share-header">
+    <div class="share-title">Share Books</div>
+    <button class="share-close" onclick="closeShareModal()">✕</button>
+  </div>
+  <div class="share-content" id="share-content">
+    <!-- Books will be populated here -->
+  </div>
+  <div class="share-footer">
+    <button class="share-btn share-btn-export" id="share-png-btn" onclick="exportPNGCards()" disabled>📸 Export PNG</button>
+    <button class="share-btn share-btn-export" id="share-json-btn" onclick="exportJSON_Books()" disabled>📦 Export JSON</button>
+    <button class="share-btn share-btn-cancel" onclick="closeShareModal()">Cancel</button>
+  </div>
+</div>
 </body>
 </html>
