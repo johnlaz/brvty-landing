@@ -111,24 +111,26 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Mon
 .nav-badge.show{display:flex;}
 
 /* ── PAGE: GENERATE ── */
-#page-generate{padding:20px 16px 20px;gap:14px;}
-.gen-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
-.gen-field{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;padding:12px 14px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none;}
+#page-generate{padding:14px 16px 20px;gap:12px;}
+.gen-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;margin-top:12px;font-weight:600;}
+.gen-field{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;padding:11px 12px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none;}
 .gen-field::placeholder{color:var(--text3);font-style:italic;}
 .gen-field:focus{border-color:var(--blue);}
-.gen-field.mono{font-family:'DM Mono',monospace;font-size:12px;resize:none;line-height:1.7;min-height:80px;}
-.gen-row{display:flex;gap:10px;}
+.gen-field.mono{font-family:'DM Mono',monospace;font-size:11px;resize:none;line-height:1.6;min-height:100px;}
+.gen-row{display:flex;gap:8px;}
 .gen-row .gen-field:first-child{flex:2;}
-.gen-row .gen-field:last-child{flex:1;font-size:15px;}
-.char-hint{font-size:9px;color:var(--text3);text-align:right;margin-top:3px;}
+.gen-row .gen-field:last-child{flex:1;font-size:14px;}
+.char-hint{font-size:8px;color:var(--text3);text-align:right;margin-top:4px;}
 
 /* PDF import button */
-.pdf-btn{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);color:var(--text3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:7px 12px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.pdf-btn{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);color:var(--text3);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.5px;text-transform:uppercase;padding:6px 10px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .pdf-btn:hover{border-color:var(--blue);color:var(--blue);}
 
-.btn-generate{width:100%;background:linear-gradient(135deg,var(--blue) 0%,#2a6abf 100%);border:none;border-radius:var(--r);color:#fff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px;cursor:pointer;transition:all .2s;margin-top:2px;}
+.btn-generate{width:100%;background:linear-gradient(135deg,var(--blue) 0%,#2a6abf 100%);border:none;border-radius:var(--r);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:12px;cursor:pointer;transition:all .2s;margin-top:6px;}
 .btn-generate:active{transform:scale(.99);}
 .btn-generate:disabled{opacity:.35;cursor:not-allowed;}
+#gen-book-mode, #gen-doc-mode {display:flex;flex-direction:column;gap:12px;}
+#gen-book-mode > div, #gen-doc-mode > div {display:flex;flex-direction:column;gap:8px;}
 .btn-sec{flex:1;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:11px;cursor:pointer;transition:all .2s;}
 .btn-sec:hover{border-color:var(--blue);color:var(--blue);}
 .loading-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:24px;display:none;flex-direction:column;align-items:center;gap:12px;text-align:center;}
@@ -363,8 +365,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Mon
 
 
 /* GENERATE MODE TOGGLE */
-.mode-toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:4px;}
-.mode-tab{flex:1;padding:9px 8px;text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:none;transition:all .15s;}
+.mode-toggle{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:visible;margin-bottom:12px;gap:0;}
+.mode-tab{flex:1;padding:12px 8px;text-align:center;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);cursor:pointer;border:none;background:transparent;transition:all .15s;border-radius:0;font-weight:700;position:relative;z-index:1;}
+.mode-tab:first-child{border-radius:var(--r) 0 0 var(--r);}
+.mode-tab:last-child{border-radius:0 var(--r) var(--r) 0;}
+.mode-tab.active{background:var(--blue);color:#fff;box-shadow:0 0 12px rgba(61,142,240,0.4);}
 .mode-tab.active{background:var(--blue-dim);color:var(--blue);}
 
 /* DOCUMENT READ-BACK OPTIONS */
@@ -542,24 +547,24 @@ body.light .af-item{background:var(--surface);border-color:var(--border);}
 body.light #intro-overlay{background:rgba(240,242,247,0.95);}
 .intro-card{background:var(--bg2);border-radius:16px;border:1px solid var(--border2);max-width:420px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
 .intro-slides{display:flex;transition:transform .35s ease;will-change:transform;}
-.intro-slide{min-width:100%;padding:28px 24px 20px;display:flex;flex-direction:column;gap:14px;}
-.intro-hero{font-size:42px;text-align:center;line-height:1;}
-.intro-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--blue);text-align:center;}
-.intro-body{font-size:12px;color:var(--text2);line-height:1.8;text-align:center;}
+.intro-slide{min-width:100%;padding:16px 14px 12px;display:flex;flex-direction:column;gap:8px;}
+.intro-hero{font-size:28px;text-align:center;line-height:1;}
+.intro-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--blue);text-align:center;}
+.intro-body{font-size:10px;color:var(--text2);line-height:1.6;text-align:center;}
 .intro-body strong{color:var(--text);}
 .intro-body a{color:var(--blue);text-decoration:none;}
 .intro-body a:hover{text-decoration:underline;}
-.intro-step{background:var(--surface2);border-radius:var(--r2);padding:12px 14px;font-size:11px;color:var(--text2);line-height:1.7;}
-.intro-step strong{color:var(--text);display:block;margin-bottom:3px;}
-.intro-actions{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-top:1px solid var(--border);}
-.intro-dots{display:flex;gap:6px;}
-.intro-dot{width:7px;height:7px;border-radius:50%;background:var(--border2);cursor:pointer;transition:background .2s;}
+.intro-step{background:var(--surface2);border-radius:var(--r2);padding:8px 10px;font-size:9px;color:var(--text2);line-height:1.5;}
+.intro-step strong{color:var(--text);display:block;margin-bottom:2px;}
+.intro-actions{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--border);}
+.intro-dots{display:flex;gap:4px;}
+.intro-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);cursor:pointer;transition:background .2s;}
 .intro-dot.active{background:var(--blue);}
-.intro-prev{background:none;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;cursor:pointer;}
+.intro-prev{background:none;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.5px;text-transform:uppercase;padding:6px 10px;cursor:pointer;}
 .intro-prev:hover{border-color:var(--blue);color:var(--blue);}
-.intro-next{background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 18px;cursor:pointer;}
+.intro-next{background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;}
 .intro-next:hover{background:var(--blue2);}
-.intro-skip{background:none;border:none;color:var(--text3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:8px;}
+.intro-skip{background:none;border:none;color:var(--text3);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;padding:6px;}
 .intro-skip:hover{color:var(--text);}
 
 /* DESKTOP */
@@ -4063,16 +4068,51 @@ function cancelSleepTimer(){
 
 /* ══════════════════════════════════════ SHARE */
 function copyShareSummary(){
-  if(!currentBook)return;
+  if(!currentBook){
+    toast('No book selected','err');
+    return;
+  }
   const s=currentBook.summary;
-  let txt=`📖 ${s.title}${s.author?' by '+s.author:''}\n`;
+  if(!s){
+    toast('Summary not available','err');
+    return;
+  }
+  let txt=`📖 ${s.title||'Untitled'}${s.author?' by '+s.author:''}\n`;
   txt+=`${'─'.repeat(40)}\n\n`;
-  txt+=`THESIS\n${s.thesis}\n\n`;
+  if(s.thesis){txt+=`THESIS\n${s.thesis}\n\n`;}
   if((s.key_pillars||[]).length){txt+=`KEY PILLARS\n`;(s.key_pillars||[]).forEach((p,i)=>txt+=`${i+1}. ${p.title}\n`);}
   txt+='\n';
   if((s.action_items||[]).length){txt+=`ACTION ITEMS\n`;(s.action_items||[]).forEach(a=>txt+=`☐ ${a}\n`);}
   txt+='\nGenerated with BRVTY — Book Intelligence';
-  navigator.clipboard.writeText(txt).then(()=>toast('Summary copied to clipboard ✓','ok')).catch(()=>toast('Copy failed — try again','err'));
+  
+  // Try modern Clipboard API first (requires HTTPS or localhost with http://)
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=>toast('✓ Summary copied!','ok')).catch((err)=>{
+      console.warn('Clipboard API failed, using fallback',err);
+      copyFallback(txt);
+    });
+  } else {
+    // Fallback for file:// protocol or older browsers
+    copyFallback(txt);
+  }
+}
+
+function copyFallback(txt){
+  // Create temporary textarea, select, copy, remove
+  const textarea=document.createElement('textarea');
+  textarea.value=txt;
+  textarea.style.position='fixed';
+  textarea.style.opacity='0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try{
+    document.execCommand('copy');
+    toast('✓ Summary copied!','ok');
+  }catch(err){
+    console.error('Copy fallback error:',err);
+    toast('Copy not supported in this mode','err');
+  }
+  document.body.removeChild(textarea);
 }
 
 /* ══════════════════════════════════════ RECENTLY OPENED */
@@ -4462,6 +4502,72 @@ function exportJSON_File(obj,filename){
   setTimeout(()=>URL.revokeObjectURL(link.href),100);
 }
 
+/* ══════════════════════════════════════ COVER UPLOAD */
+function triggerCoverUpload(){
+  if(!currentBook){
+    toast('No book selected','err');
+    return;
+  }
+  document.getElementById('cover-upload').click();
+}
+
+function handleCoverUpload(event){
+  const file=event.target.files?.[0];
+  if(!file || !currentBook) return;
+  
+  const reader=new FileReader();
+  reader.onload=async function(e){
+    try{
+      const dataUrl=e.target.result;
+      // Store original cover URL for revert
+      if(!currentBook._originalCoverUrl){
+        currentBook._originalCoverUrl=currentBook.coverUrl||null;
+      }
+      // Store the data URL directly
+      currentBook.coverUrl=dataUrl;
+      // Save to database
+      await dbPut(currentBook);
+      // Update UI immediately
+      loadBook(currentBook);
+      toast('✓ Cover uploaded!');
+    }catch(err){
+      console.error('Upload error:',err);
+      toast('Upload failed','err');
+    }
+  };
+  reader.readAsDataURL(file);
+  // Reset input so same file can be selected again
+  event.target.value='';
+}
+
+function removeCover(){
+  if(!currentBook){
+    toast('No book selected','err');
+    return;
+  }
+  currentBook.coverUrl='';
+  dbPut(currentBook).then(()=>{
+    loadBook(currentBook);
+    toast('✓ Cover removed');
+  }).catch(err=>{
+    console.error('Remove error:',err);
+    toast('Remove failed','err');
+  });
+}
+
+async function revertCover(){
+  if(!currentBook){
+    toast('No book selected','err');
+    return;
+  }
+  const original=currentBook._originalCoverUrl||null;
+  currentBook.coverUrl=original;
+  delete currentBook._originalCoverUrl;
+  await dbPut(currentBook);
+  loadBook(currentBook);
+  toast('✓ Reverted to original cover');
+}
+
 /* ══════════════════════════════════════ BOOT */
 async function boot(){
   buildWaveform();loadPrefs();
@@ -4580,6 +4686,8 @@ boot();
   }, {passive:true, capture:true});
 })();
 </script>
+<!-- COVER UPLOAD INPUT -->
+<input type="file" id="cover-upload" accept="image/*" style="display:none;" onchange="handleCoverUpload(event)">
 <!-- SHARE MODAL -->
 <div class="share-modal" id="share-modal">
   <div class="share-header">
