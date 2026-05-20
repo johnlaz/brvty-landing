@@ -545,26 +545,26 @@ body.light .af-item{background:var(--surface);border-color:var(--border);}
 /* INTRO CARDS */
 #intro-overlay{position:fixed;inset:0;background:rgba(13,14,18,0.92);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;}
 body.light #intro-overlay{background:rgba(240,242,247,0.95);}
-.intro-card{background:var(--bg2);border-radius:16px;border:1px solid var(--border2);max-width:420px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+.intro-card{background:var(--bg2);border-radius:16px;border:1px solid var(--border2);max-width:440px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
 .intro-slides{display:flex;transition:transform .35s ease;will-change:transform;}
-.intro-slide{min-width:100%;padding:16px 14px 12px;display:flex;flex-direction:column;gap:8px;}
-.intro-hero{font-size:28px;text-align:center;line-height:1;}
-.intro-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--blue);text-align:center;}
-.intro-body{font-size:10px;color:var(--text2);line-height:1.6;text-align:center;}
+.intro-slide{min-width:100%;padding:24px 20px 16px;display:flex;flex-direction:column;gap:12px;}
+.intro-hero{font-size:40px;text-align:center;line-height:1;margin-bottom:2px;}
+.intro-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--blue);text-align:center;}
+.intro-body{font-size:14px;color:var(--text2);line-height:1.7;text-align:center;}
 .intro-body strong{color:var(--text);}
 .intro-body a{color:var(--blue);text-decoration:none;}
 .intro-body a:hover{text-decoration:underline;}
-.intro-step{background:var(--surface2);border-radius:var(--r2);padding:8px 10px;font-size:9px;color:var(--text2);line-height:1.5;}
-.intro-step strong{color:var(--text);display:block;margin-bottom:2px;}
-.intro-actions{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--border);}
-.intro-dots{display:flex;gap:4px;}
-.intro-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);cursor:pointer;transition:background .2s;}
+.intro-step{background:var(--surface2);border-radius:var(--r2);padding:12px 14px;font-size:13px;color:var(--text2);line-height:1.6;}
+.intro-step strong{color:var(--text);display:block;margin-bottom:4px;font-size:14px;}
+.intro-actions{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--border);}
+.intro-dots{display:flex;gap:6px;}
+.intro-dot{width:7px;height:7px;border-radius:50%;background:var(--border2);cursor:pointer;transition:background .2s;}
 .intro-dot.active{background:var(--blue);}
-.intro-prev{background:none;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.5px;text-transform:uppercase;padding:6px 10px;cursor:pointer;}
+.intro-prev{background:none;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;padding:8px 12px;cursor:pointer;}
 .intro-prev:hover{border-color:var(--blue);color:var(--blue);}
-.intro-next{background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;}
+.intro-next{background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;cursor:pointer;}
 .intro-next:hover{background:var(--blue2);}
-.intro-skip{background:none;border:none;color:var(--text3);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;padding:6px;}
+.intro-skip{background:none;border:none;color:var(--text3);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;padding:8px;}
 .intro-skip:hover{color:var(--text);}
 
 /* DESKTOP */
@@ -1021,7 +1021,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
           <strong>Book Intelligence for your commute.</strong><br><br>
           BRVTY turns any book into a structured summary and high-fidelity audio narration — in seconds. Generate a thesis, key pillars, action items, and listen to it on the way to work.
         </div>
-        <div class="intro-body" style="font-size:10px;color:var(--text3);">
+        <div class="intro-body" style="font-size:12px;color:var(--text3);">
           Everything stays on your device. No account required.
         </div>
       </div>
@@ -1045,25 +1045,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
         </div>
       </div>
 
-      <!-- Slide 3: How to use -->
+      <!-- Slide 3a: How to use — Generate + Summary -->
       <div class="intro-slide">
         <div class="intro-hero">✦</div>
         <div class="intro-title">How It Works</div>
         <div class="intro-step">
-          <strong>Generate</strong>
-          Type any book title (and optionally the author or paste your highlights). Tap Generate Summary. Takes about 10 seconds.
+          <strong>① Generate</strong>
+          Type any book title (and optionally the author, or paste your highlights). Tap Generate Summary. Takes about 10 seconds.
         </div>
         <div class="intro-step">
-          <strong>Summary</strong>
-          Read the thesis, key pillars, deep insights, action items, and memorable quotes. Tap a Read Next book to generate that one too.
+          <strong>② Summary</strong>
+          Read the thesis, key pillars, deep insights, action items, and memorable quotes. Tap a Read Next book to load that one too.
         </div>
+      </div>
+
+      <!-- Slide 3b: How to use — Audio + Car Mode -->
+      <div class="intro-slide">
+        <div class="intro-hero">🎙</div>
+        <div class="intro-title">Listen &amp; Drive</div>
         <div class="intro-step">
-          <strong>Audio</strong>
+          <strong>③ Audio</strong>
           Go to the Audio tab. Choose Quick (3 min), Chapters (section-by-section), or Deep Dive (15–20 min full narration). Tap Generate.
         </div>
         <div class="intro-step">
-          <strong>Car Mode</strong>
-          Tap 🚗 for a fullscreen player. Your steering wheel controls work via Bluetooth.
+          <strong>④ Car Mode</strong>
+          Tap 🚗 for a fullscreen player optimized for driving. Your steering wheel media controls work via Bluetooth.
         </div>
       </div>
 
@@ -1079,11 +1085,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
         </div>
         <div class="intro-step">
           <strong>Reading Font — 3 choices</strong>
-          <span style="font-family:'Cormorant Garamond',serif;font-size:14px;">Cormorant</span> — elegant editorial<br>
-          <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:500;">Inter</span> — clean, high readability<br>
-          <span style="font-family:Georgia,serif;font-size:13px;">Georgia</span> — warm, familiar serif
+          <span style="font-family:'Cormorant Garamond',serif;font-size:16px;">Cormorant</span> — elegant editorial<br>
+          <span style="font-family:'Inter',sans-serif;font-size:14px;font-weight:500;">Inter</span> — clean, high readability<br>
+          <span style="font-family:Georgia,serif;font-size:15px;">Georgia</span> — warm, familiar serif
         </div>
-        <div class="intro-body" style="font-size:10px;color:var(--text3);">
+        <div class="intro-body" style="font-size:12px;color:var(--text3);">
           You can also switch between <strong>dark and light themes</strong> in the same section.
         </div>
       </div>
@@ -1104,7 +1110,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
           <strong>Document Mode</strong>
           On the Generate tab, switch to Document mode to paste an article or report and get a full summary or direct audio read-back.
         </div>
-        <div class="intro-body" style="font-size:10px;color:var(--text3);margin-top:4px;">
+        <div class="intro-body" style="font-size:12px;color:var(--text3);margin-top:4px;">
           Tap ⚙ Settings → <em>Show Intro</em> to revisit this guide anytime.
         </div>
       </div>
@@ -1999,7 +2005,7 @@ async function loadSecretVault(){
   }
 }
 
-const INTRO_TOTAL = 5;
+const INTRO_TOTAL = 6;
 let introSlide = 0;
 
 function openIntro(){
