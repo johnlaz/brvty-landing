@@ -1724,11 +1724,6 @@ window.addEventListener('scroll', () => {
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches
                     || window.navigator.standalone === true;
 
-  let deferredShortcutPrompt = null; // for landing page install
-  let deferredAppPrompt = null;      // for /app/ install
-  let activeTarget = null;           // 'shortcut' | 'app'
-
-  const manifestLink = document.querySelector('link[rel="manifest"]');
   const status = document.getElementById('installStatus');
   const iosSheet = document.getElementById('iosSheet');
   const btnShortcut = document.getElementById('btnShortcut');
@@ -1739,84 +1734,27 @@ window.addEventListener('scroll', () => {
     status.className = 'install-status' + (type ? ' ' + type : '');
   }
 
-  // Capture the beforeinstallprompt — fires for whichever manifest is active
-  // We capture it once for the landing page (default manifest = /)
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    if (!deferredShortcutPrompt) {
-      deferredShortcutPrompt = e;
-    }
-  });
-
   // ── SHORTCUT BUTTON ──
-  btnShortcut.addEventListener('click', async () => {
+  // Landing page has no SW so Chrome won't fire beforeinstallprompt here.
+  // Direct users to browser menu for Add to Home Screen.
+  btnShortcut.addEventListener('click', () => {
     if (isIOS) {
       showIOSSheet('shortcut');
       return;
     }
-    if (deferredShortcutPrompt) {
-      // Manifest is already pointing at / — fire directly
-      try {
-        deferredShortcutPrompt.prompt();
-        const { outcome } = await deferredShortcutPrompt.userChoice;
-        deferredShortcutPrompt = null;
-        if (outcome === 'accepted') {
-          setStatus('✓ Shortcut added to home screen', 'success');
-          btnShortcut.textContent = 'Added ✓';
-          btnShortcut.disabled = true;
-        } else {
-          setStatus('Shortcut install dismissed.', '');
-        }
-      } catch(e) {
-        setStatus('Install prompt unavailable — use browser menu.', '');
-      }
-    } else {
-      setStatus('Use your browser menu → "Add to Home Screen" to pin this page.', '');
-    }
+    setStatus('In Chrome: tap the ⋮ menu → "Add to Home Screen" to pin this page.', '');
   });
 
   // ── APP INSTALL BUTTON ──
-  btnApp.addEventListener('click', async () => {
+  // Navigate to /app/ — the PWA install prompt fires there naturally.
+  btnApp.addEventListener('click', () => {
     if (isIOS) {
       showIOSSheet('app');
       return;
     }
-    setStatus('Preparing app install…', '');
-
-    // Swap manifest to /app/manifest.json so Chrome reads app's rich manifest
-    manifestLink.href = './app/manifest.json';
-
-    // Small delay to let the browser re-read the manifest
-    await new Promise(r => setTimeout(r, 300));
-
-    if (deferredShortcutPrompt) {
-      // Reuse the deferred prompt — it will now install /app/ scope
-      try {
-        deferredShortcutPrompt.prompt();
-        const { outcome } = await deferredShortcutPrompt.userChoice;
-        deferredShortcutPrompt = null;
-        manifestLink.href = 'manifest.json'; // restore
-        if (outcome === 'accepted') {
-          setStatus('✓ BRVTY App installed!', 'success');
-          btnApp.textContent = 'Installed ✓';
-          btnApp.disabled = true;
-        } else {
-          setStatus('App install dismissed.', '');
-        }
-      } catch(e) {
-        manifestLink.href = 'manifest.json';
-        fallbackToAppPage();
-      }
-    } else {
-      // No prompt captured — navigate user to /app/ where prompt fires naturally
-      fallbackToAppPage();
-    }
-  });
-
-  function fallbackToAppPage() {
     setStatus('Opening app — install from there for the full experience.', '');
-    setTimeout(() => { window.location.href = './app/'; }, 900);
-  }
+    setTimeout(() => { window.location.href = './app/'; }, 600);
+  });
 
   // ── iOS INSTRUCTION SHEET ──
   function showIOSSheet(target) {

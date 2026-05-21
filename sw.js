@@ -1,20 +1,10 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// BRVTY Root Service Worker (OPTION A - Single-PWA Mode)
-// 
-// This is a minimal passthrough service worker at root level.
-// The actual app PWA lives at /app/ with its own manifest and service worker.
-// This root SW simply activates and claims clients, letting the app SW handle caching.
-// ═══════════════════════════════════════════════════════════════════════════════
-
-self.addEventListener('install', event => {
-  // Root SW has no assets to precache; skip waiting
-  self.skipWaiting();
-});
-
+// Root SW — self-destructs so the landing page is never treated as an installable PWA.
+// The real PWA lives at /app/ with its own sw.js and manifest.
+self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', event => {
-  // Claim all clients immediately
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    self.registration.unregister().then(() => self.clients.matchAll()).then(clients => {
+      clients.forEach(client => client.navigate(client.url));
+    })
+  );
 });
-
-// No fetch handler — let browser handle all requests
-// The /app/sw.js will intercept /app/ scope requests
