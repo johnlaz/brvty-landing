@@ -1,14 +1,11 @@
 {
+  "id": "/landing",
   "name": "BRVTY — Book Intelligence",
   "short_name": "BRVTY",
   "description": "AI-powered book summaries with chapter audio, deep narration, cover art, and an audiobook shelf. Generate structured intelligence from any book in seconds. Listen on your commute.",
-  "start_url": "/app/",
-  "scope": "/app/",
-  "display": "standalone",
-  "display_override": [
-    "standalone",
-    "minimal-ui"
-  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
   "orientation": "portrait-primary",
   "background_color": "#0d0e12",
   "theme_color": "#3d8ef0",
