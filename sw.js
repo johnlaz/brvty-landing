@@ -1,10 +1,84 @@
-// Root SW — self-destructs so the landing page is never treated as an installable PWA.
-// The real PWA lives at /app/ with its own sw.js and manifest.
-self.addEventListener('install', () => self.skipWaiting());
+/**
+ * BRVTY Landing — Service Worker
+ * Cache-first for offline support. Keeps display:browser so Chrome shows
+ * the address-bar badge instead of the aggressive "Install App" bottom sheet.
+ * Bump CACHE_NAME when deploying new releases.
+ */
+
+const CACHE_NAME = 'brvty-landing-v1';
+
+const PRECACHE_URLS = [
+  './',
+  './index.html',
+  './manifest.json',
+  '/app/icon-192.png',
+  '/app/icon-512.png'
+];
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(PRECACHE_URLS).catch(() => {
+        return Promise.all(
+          PRECACHE_URLS.map(url => cache.add(url).catch(() => null))
+        );
+      }))
+      .then(() => self.skipWaiting())
+  );
+});
+
 self.addEventListener('activate', event => {
   event.waitUntil(
-    self.registration.unregister().then(() => self.clients.matchAll()).then(clients => {
-      clients.forEach(client => client.navigate(client.url));
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // Never intercept /app/ — let the app's own SW handle it
+  if (url.pathname.startsWith('/app/')) {
+    return;
+  }
+
+  // Pass through analytics/tracking
+  if (url.hostname.includes('workers.dev') || url.pathname.startsWith('/track') || url.pathname.startsWith('/stats')) {
+    return;
+  }
+
+  // Network-first for Google Fonts
+  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(event.request).then(cached => {
+          const net = fetch(event.request).then(r => {
+            if (r.ok) cache.put(event.request, r.clone());
+            return r;
+          });
+          return cached || net;
+        })
+      )
+    );
+    return;
+  }
+
+  // Cache-first for everything else at root
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
+        if (!response || response.status !== 200 || event.request.method !== 'GET') return response;
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+        return response;
+      }).catch(() => caches.match('./index.html'));
     })
   );
 });

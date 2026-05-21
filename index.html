@@ -18,8 +18,25 @@
 <link rel="apple-touch-icon" href="/app/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/app/icon-192.png">
 
-<!-- NO service worker registration at root -->
-<!-- /app/sw.js handles all service worker and caching -->
+<!-- Landing page manifest (display:browser = badge only, no install prompt) -->
+<link rel="manifest" href="./manifest.json">
+
+<!-- Register root SW for offline caching and address-bar badge -->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js', { scope: './' })
+      .then(reg => {
+        reg.addEventListener('updatefound', () => {
+          const n = reg.installing;
+          n.addEventListener('statechange', () => {
+            if (n.state === 'installed' && navigator.serviceWorker.controller) {}
+          });
+        });
+      })
+      .catch(() => {});
+    navigator.serviceWorker.addEventListener('controllerchange', () => {});
+  }
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1735,14 +1752,15 @@ window.addEventListener('scroll', () => {
   }
 
   // ── SHORTCUT BUTTON ──
-  // Landing page has no SW so Chrome won't fire beforeinstallprompt here.
-  // Direct users to browser menu for Add to Home Screen.
+  // display:browser means Chrome shows the address-bar badge but no bottom sheet.
+  // The badge lets users add a shortcut via the omnibar install icon.
+  // For users who miss the badge, guide them to the browser menu.
   btnShortcut.addEventListener('click', () => {
     if (isIOS) {
       showIOSSheet('shortcut');
       return;
     }
-    setStatus('In Chrome: tap the ⋮ menu → "Add to Home Screen" to pin this page.', '');
+    setStatus('Look for the install icon (⊕) in your browser address bar, or tap ⋮ menu → "Add to Home Screen".', '');
   });
 
   // ── APP INSTALL BUTTON ──
