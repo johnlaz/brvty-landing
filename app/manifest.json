@@ -3,8 +3,8 @@
   "name": "BRVTY — Book Intelligence",
   "short_name": "BRVTY",
   "description": "AI-powered book summaries with chapter audio, deep narration, cover art, and an audiobook shelf. Generate structured intelligence from any book in seconds. Listen on your commute.",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/app/",
+  "scope": "/app/",
   "display": "standalone",
   "display_override": [
     "standalone",
@@ -122,7 +122,7 @@
       "name": "Generate Summary",
       "short_name": "Generate",
       "description": "Generate a new book summary",
-      "url": "./?tab=generate",
+      "url": "/app/?tab=generate",
       "icons": [
         {
           "src": "icon-192.png",
@@ -134,7 +134,7 @@
       "name": "My Library",
       "short_name": "Library",
       "description": "Browse your book library",
-      "url": "./?tab=library",
+      "url": "/app/?tab=library",
       "icons": [
         {
           "src": "icon-192.png",
@@ -146,7 +146,7 @@
       "name": "Audiobooks",
       "short_name": "Audiobooks",
       "description": "Open your audiobook shelf",
-      "url": "./?tab=audiobooks",
+      "url": "/app/?tab=audiobooks",
       "icons": [
         {
           "src": "icon-192.png",
@@ -156,7 +156,7 @@
     }
   ],
   "share_target": {
-    "action": "./",
+    "action": "/app/",
     "method": "GET",
     "params": {
       "title": "title",
@@ -165,6 +165,6 @@
     }
   },
   "launch_handler": {
-    "client_mode": "navigate-existing"
+    "client_mode": ["navigate-existing", "auto"]
   }
 }
