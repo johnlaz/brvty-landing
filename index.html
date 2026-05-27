@@ -12,11 +12,11 @@
 <title>BRVTY — The Shortcut</title>
 
 <!-- Canonical link to app -->
-<link rel="canonical" href="https://brvty.net/app/">
+<link rel="canonical" href="https://app.brvty.net/">
 
 <!-- Icon links point to /app/ -->
-<link rel="apple-touch-icon" href="/app/icon-192.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/app/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 
 <!-- Landing page manifest (display:browser = badge only, no install prompt) -->
 <link rel="manifest" href="./manifest.json">
@@ -1221,7 +1221,7 @@
     <a href="#features">Features</a>
     <a href="#demo">Demo</a>
     <a href="#install">Install</a>
-    <a href="./app/" class="nav-cta">Launch App →</a>
+    <a href="https://app.brvty.net/" class="nav-cta">Launch App →</a>
   </nav>
 </header>
 
@@ -1239,7 +1239,7 @@
       We don't replace the book. We make you <strong>want to buy it.</strong>
     </p>
     <div class="cta-group reveal reveal-delay-3">
-      <a href="./app/" class="btn-primary">⚡ Launch BRVTY</a>
+      <a href="https://app.brvty.net/" class="btn-primary">⚡ Launch BRVTY</a>
       <a href="#demo" class="btn-ghost">▶ Hear a Sample</a>
     </div>
     <div class="hero-stats reveal reveal-delay-4">
@@ -1485,7 +1485,7 @@
       </div>
       <div class="demo-cta">
         <span class="demo-cta-text">Original AI synthesis — not a reproduction. <a href="https://www.amazon.com/s?k=the+art+of+the+pause" target="_blank" rel="noopener">Support the author →</a></span>
-        <a href="./app/" class="btn-primary" style="font-size:0.62rem;padding:0.65rem 1.4rem;">Open BRVTY →</a>
+        <a href="https://app.brvty.net/" class="btn-primary" style="font-size:0.62rem;padding:0.65rem 1.4rem;">Open BRVTY →</a>
       </div>
     </div>
   </div>
@@ -1563,7 +1563,7 @@
       <div class="install-status" id="installStatus"></div>
 
       <div class="reveal reveal-delay-3" style="text-align:center;margin-top:2rem;">
-        <a href="./app/" class="btn-primary" style="font-size:0.78rem;padding:1rem 2.5rem;display:inline-flex;">
+        <a href="https://app.brvty.net/" class="btn-primary" style="font-size:0.78rem;padding:1rem 2.5rem;display:inline-flex;">
           ⚡ Launch BRVTY Now
         </a>
       </div>
@@ -1584,7 +1584,7 @@
     <div class="footer-col">
       <h5>App</h5>
       <ul>
-        <li><a href="./app/">Launch BRVTY</a></li>
+        <li><a href="https://app.brvty.net/">Launch BRVTY</a></li>
         <li><a href="#demo">Live Demo</a></li>
         <li><a href="#install">Install PWA</a></li>
         <li><a href="#features">Features</a></li>
@@ -1620,7 +1620,7 @@
   <div class="footer-bottom">
     <p>
       <img id="lazlab-egg"
-           src="/app/lazlab-96.png"
+           src="/lazlab-96.png"
            alt="LazLab"
            style="width:18px;height:18px;border-radius:4px;opacity:0.35;cursor:default;vertical-align:middle;margin-right:6px;transition:opacity 0.3s;"
            title="">
@@ -1771,7 +1771,7 @@ window.addEventListener('scroll', () => {
       return;
     }
     setStatus('Opening app — install from there for the full experience.', '');
-    setTimeout(() => { window.location.href = './app/'; }, 600);
+    setTimeout(() => { window.location.href = 'https://app.brvty.net/'; }, 600);
   });
 
   // ── iOS INSTRUCTION SHEET ──
@@ -1781,10 +1781,10 @@ window.addEventListener('scroll', () => {
       ? 'Install BRVTY App — iOS Safari'
       : 'Add Shortcut — iOS Safari';
 
-    const url = isApp ? 'brvty.net/app/' : 'brvty.net';
+    const url = isApp ? 'app.brvty.net/' : 'brvty.net';
 
     document.getElementById('iosStep1').innerHTML = isApp
-      ? `Open <strong>brvty.net/app/</strong> in Safari (tap to open: <a href="./app/" style="color:var(--blue)">Launch App</a>)`
+      ? `Open <strong>app.brvty.net/</strong> in Safari (tap to open: <a href="https://app.brvty.net/" style="color:var(--blue)">Launch App</a>)`
       : `Make sure you're on <strong>brvty.net</strong> in Safari`;
 
     document.getElementById('iosStep2').innerHTML =

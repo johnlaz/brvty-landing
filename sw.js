@@ -5,14 +5,14 @@
  * Bump CACHE_NAME when deploying new releases.
  */
 
-const CACHE_NAME = 'brvty-landing-v1';
+const CACHE_NAME = 'brvty-landing-v2';
 
 const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
-  '/app/icon-192.png',
-  '/app/icon-512.png'
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
 self.addEventListener('message', event => {
@@ -43,11 +43,6 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-
-  // Never intercept /app/ — let the app's own SW handle it
-  if (url.pathname.startsWith('/app/')) {
-    return;
-  }
 
   // Pass through analytics/tracking
   if (url.hostname.includes('workers.dev') || url.pathname.startsWith('/track') || url.pathname.startsWith('/stats')) {
