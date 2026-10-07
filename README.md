@@ -54,6 +54,7 @@ offline.html      shown when offline and nothing is cached
 icon-192.png  icon-512.png  icon-180.png
 shot-*.png        install-dialog screenshots
 brvty-library.folio   library backup loaded by the logo shortcut (see below)
+icon-maskable-512.png padded icon for Android adaptive masks
 docs/             README visuals
 ```
 
@@ -61,7 +62,7 @@ docs/             README visuals
 
 Tap the BRVTY logo 5 times quickly and the app loads `brvty-library.folio` from the site and merges it into your library (books already present are skipped).
 
-The file in this repo is an **empty placeholder**. To use your own: in the app go to **Settings → Library Vault → Export Vault**, save the `.folio` file here as `brvty-library.folio`, then deploy. Large backups load slowly on mobile data; keep the file out of the service-worker cache (it already is).
+The file in this repo is your library backup (14 books, exported 2026-05-09). To refresh it with a newer library: in the app go to **Settings → Library Vault → Export Vault**, save the `.folio` file here as `brvty-library.folio` (replacing the old one), then deploy. It is about 24 MB, so it loads slowly on mobile data, and the service worker never caches it.
 
 ## Deploy and update
 
@@ -75,6 +76,7 @@ Moving files or changing `scope` can break existing installs, so keep the app at
 
 ## Changelog
 
+- **6.3:** new black-and-silver icon; wordmark underlines only "TY" to match it; library backup restored.
 - **6.2:** service worker now registers at the real root path (offline works); network-first pages with an update banner; first-run key card with key testing; model picker with refresh; square maskable icons and valid screenshots; contrast, zoom and label fixes; library file loader fixed with a placeholder; single `APP_VERSION`.
 - **6.1:** Gemini model update, cover-scan, library vault.
 
