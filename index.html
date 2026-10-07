@@ -146,6 +146,10 @@
     border-radius: 1px;
   }
 
+  /* Wordmark: only "TY" is underlined, matching the app icon */
+  .ty .y { letter-spacing: 0; }
+  .ty { display: inline-block; border-bottom: 2px solid var(--blue); padding-bottom: 3px; line-height: 1; }
+
   nav { display: flex; gap: 0.1rem; align-items: center; }
   nav a {
     font-family: var(--font-mono);
@@ -1215,7 +1219,7 @@
 <header>
   <a href="#" class="logo-wrap">
     <div class="logo-icon"><img src="icon-512.png" alt="BRVTY"></div>
-    <div class="logo-text">BRVTY<span class="blue-bar"></span></div>
+    <div class="logo-text">BRV<span class="ty">T<span class="y">Y</span></span></div>
   </a>
   <nav>
     <a href="#features">Features</a>
@@ -1577,7 +1581,7 @@
     <div class="footer-brand">
       <a href="#" class="footer-logo-wrap">
         <img src="icon-512.png" alt="BRVTY" style="width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;box-shadow:0 0 10px rgba(43,127,255,0.2);">
-        <div class="footer-logo-text">BRVTY<span class="blue-bar"></span></div>
+        <div class="footer-logo-text">BRV<span class="ty">T<span class="y">Y</span></span></div>
       </a>
       <p>The shortcut intelligence platform for the curious professional. AI-crafted summaries that drive readers back to the books they love.</p>
     </div>

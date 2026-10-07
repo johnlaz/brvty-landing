@@ -3,7 +3,7 @@
  * HTML is network-first (so edits show up immediately); static assets are cache-first.
  * Bump CACHE_NAME on each deploy that changes cached assets.
  */
-const CACHE_NAME = 'brvty-landing-v3';
+const CACHE_NAME = 'brvty-landing-v4';
 const PRECACHE_URLS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-180.png', './lazlab-96.png'];
 
 self.addEventListener('message', e => { if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting(); });
