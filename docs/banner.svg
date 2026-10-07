@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-labelledby="t d">
+  <title id="t">BRVTY, Book Intelligence</title>
+  <desc id="d">BRVTY turns any book into a structured summary and commute-ready audio.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#151a26"/><stop offset="1" stop-color="#0a0c11"/></linearGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3d8ef0"/><stop offset="1" stop-color="#6aaeff"/></linearGradient>
+  </defs>
+  <rect width="1200" height="300" rx="20" fill="url(#g)"/>
+  <rect x="60" y="82" width="120" height="136" rx="10" fill="#1c1f29" stroke="#3d8ef0" stroke-width="2"/>
+  <g stroke="#dde2e8" stroke-width="3" stroke-linecap="round" opacity=".85"><path d="M82 112h76M82 132h76M82 152h76M82 172h50"/></g>
+  <rect x="82" y="190" width="76" height="4" rx="2" fill="url(#b)"/>
+  <text x="220" y="148" font-family="Georgia,'Times New Roman',serif" font-size="84" letter-spacing="14" fill="#dde2e8">BRVTY</text>
+  <text x="224" y="196" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="30" fill="#6aaeff">Any book, distilled. Ready for the drive.</text>
+  <rect x="224" y="222" width="190" height="3" rx="1.5" fill="url(#b)"/>
+</svg>

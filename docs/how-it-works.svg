@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" role="img" aria-labelledby="t d">
+  <title id="t">How BRVTY works</title>
+  <desc id="d">Four steps: enter a title, get a structured summary, generate chapter audio, then listen in car mode. Everything is stored on the device.</desc>
+  <rect width="1200" height="380" rx="20" fill="#0d0e12"/>
+  <text x="600" y="52" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#dde2e8">From title to commute in four steps</text>
+  <g font-family="system-ui,Segoe UI,Arial,sans-serif">
+    <g>
+      <rect x="40" y="90" width="248" height="190" rx="14" fill="#1c1f29" stroke="#3d8ef0"/>
+      <text x="64" y="132" font-size="34" font-weight="700" fill="#3d8ef0">1</text>
+      <text x="64" y="170" font-size="21" font-weight="600" fill="#dde2e8">Enter a title</text>
+      <text x="64" y="200" font-size="15" fill="#aab2bc">Type it, scan the cover,</text>
+      <text x="64" y="222" font-size="15" fill="#aab2bc">or paste any document.</text>
+    </g>
+    <g>
+      <rect x="326" y="90" width="248" height="190" rx="14" fill="#1c1f29" stroke="#3d8ef0"/>
+      <text x="350" y="132" font-size="34" font-weight="700" fill="#3d8ef0">2</text>
+      <text x="350" y="170" font-size="21" font-weight="600" fill="#dde2e8">Read the brief</text>
+      <text x="350" y="200" font-size="15" fill="#aab2bc">Thesis, key pillars, deep</text>
+      <text x="350" y="222" font-size="15" fill="#aab2bc">dive, actions, quotes.</text>
+    </g>
+    <g>
+      <rect x="612" y="90" width="248" height="190" rx="14" fill="#1c1f29" stroke="#3d8ef0"/>
+      <text x="636" y="132" font-size="34" font-weight="700" fill="#3d8ef0">3</text>
+      <text x="636" y="170" font-size="21" font-weight="600" fill="#dde2e8">Make the audio</text>
+      <text x="636" y="200" font-size="15" fill="#aab2bc">Quick, Chapters, or a long</text>
+      <text x="636" y="222" font-size="15" fill="#aab2bc">Deep Dive narration.</text>
+    </g>
+    <g>
+      <rect x="898" y="90" width="262" height="190" rx="14" fill="#1c1f29" stroke="#3d8ef0"/>
+      <text x="922" y="132" font-size="34" font-weight="700" fill="#3d8ef0">4</text>
+      <text x="922" y="170" font-size="21" font-weight="600" fill="#dde2e8">Listen anywhere</text>
+      <text x="922" y="200" font-size="15" fill="#aab2bc">Car Mode, sleep timer,</text>
+      <text x="922" y="222" font-size="15" fill="#aab2bc">steering-wheel controls.</text>
+    </g>
+    <g stroke="#6aaeff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M294 185h26m-8-8l8 8-8 8"/><path d="M580 185h26m-8-8l8 8-8 8"/><path d="M866 185h26m-8-8l8 8-8 8"/>
+    </g>
+    <rect x="40" y="306" width="1120" height="44" rx="10" fill="#12141a" stroke="#2a3040"/>
+    <text x="600" y="334" text-anchor="middle" font-size="16" fill="#aab2bc">Your key and library stay on this device. The only network calls go straight to Google Gemini.</text>
+  </g>
+</svg>
